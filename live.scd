@@ -1,6 +1,6 @@
 (
 
-
+var a,b;
 a=r{ arg array;
 	var internCount=0;
 	var mod=array.size;
@@ -14,8 +14,6 @@ a=r{ arg array;
 		},{	internCount=internCount+1});
 	}	
 };
-
-
 b=(list:[0,2,3,2,3]).parent_(
 	(embedInStream:{arg s;
 		var str=a.asStream;
@@ -49,13 +47,11 @@ b=(list:[0,2,3,2,3]).parent_(
 				}
 			);
 			s.fen.go
-		})
-);
-b.gui(1);
-
-
-Pbind(\io, Plazy(b)).trace.play()
-
+		}),
+	pat:Pbind(\io, Plazy(b)).trace,
+	play:{arg s; s.pat.play}
+).parent_(routine:a)
+.copy
 
 
 )
