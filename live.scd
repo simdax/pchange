@@ -4,7 +4,6 @@
 a=r{ arg array;
 	var internCount=0;
 	var mod=array.size;
-	array.postln;
 	loop{
 		var index=internCount % mod;
 		var res=array@@index;
@@ -22,26 +21,31 @@ b=(list:[0,2,3,2,3]).parent_(
 		var str=a.asStream;
 		r{loop{
 			var res=str.next(s.list);
-			defer{if(s.fen.notNil){s.fen[\gui].index=res[1]}};
+			defer{if(s.fen.notNil)
+				{s.fen[\gui].index=res[1]; s.parent.index=res[1]}
+			};
 			res[0].yield
 		}}.embedInStream},
 		gui:{arg s;
 			s.fen=(
 				go: {arg ss;
-					ss[\gui]=(MSVPlus(FlowView(nil, 350@150))
-						.onClose_{s[\gui]=nil});
-					ss[\gui].msv.showIndex_(true)
-					//ss[\gui]
-					.value_(s.list);
-					[
-						ss[\gui].msv,
-						ss[\gui].buttons[0],
-						ss[\gui].buttons[1]
-					].do { |i|
-						i.addAction({
-							s.list=ss[\gui].msv.value
-						})
-					}
+					//var g;
+					g=MSVP.msvPlusLive.copy.gui;
+					g.makeGui.win.onClose_{s[\gui]=nil};
+					g.msv.showIndex_(true)
+					.addAction({arg msv;
+						msv.showIndex_(false);
+					},\mouseDownAction)
+					.addAction({arg msv;
+						msv.showIndex_(true);
+					},\mouseUpAction);
+					g.val_(s.list);
+					[g.msv,g.button1,g.button2].do { |i|
+						i.addAction({ 
+							s.list=g.val;
+						},\mouseUpAction)
+					};
+					ss[\gui]=g.msv;
 				}
 			);
 			s.fen.go
