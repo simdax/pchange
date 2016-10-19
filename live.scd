@@ -15,22 +15,25 @@ a=r{ arg array;
 	}	
 };
 b=(list:[0,2,3,2,3]).parent_(
-	(embedInStream:{arg s;
+	(
+		embedInStream:{arg s;
 		var str=a.asStream;
 		r{loop{
 			var res=str.next(s.list);
-			defer{if(s.fen.notNil)
-				{s.fen[\gui].index=res[1]; s.parent.index=res[1]}
+			defer{if(s.win.notNil)
+				{s.win[\gui].index=res[1]; s.parent.index=res[1]}
 			};
 			res[0].yield
 		}}.embedInStream},
+		//	play:
 		gui:{arg s;
-			s.fen=(
+			s.win=(
 				go: {arg ss;
 					//var g;
-					g=MSVP.msvPlusLive.copy.gui;
+					g=MSVP.main.copy.gui;
 					g.makeGui.win.onClose_{s[\gui]=nil};
 					g.msv.showIndex_(true)
+					.index_(s[\index]?0)
 					.addAction({arg msv;
 						msv.showIndex_(false);
 					},\mouseDownAction)
@@ -46,12 +49,11 @@ b=(list:[0,2,3,2,3]).parent_(
 					ss[\gui]=g.msv;
 				}
 			);
-			s.fen.go
-		}),
-	pat:Pbind(\io, Plazy(b)).trace,
-	play:{arg s; s.pat.play}
-).parent_(routine:a)
-.copy
+			s.win.go
+		},
+	)
+).copy;
 
-
+//Pbind(\i, Plazy(b)).trace.play
 )
+
