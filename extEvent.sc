@@ -13,7 +13,24 @@
 	asStream{
 		^if(this[\asStream].notNil){
 			this[\asStream].value(this)
-		}{this.asStream}
+		}{super.asStream}
+	}
+	asESP{
+		^if(this[\asESP].notNil){
+			this[\asESP].value(this)
+		}{this}
+	}
+	<>{ arg aPat;
+		'gfuqgiofds'.postln;
+		^(Pchain(this.asESP,aPat))
+	}
+
+}
+
++ Pattern{
+	<> { arg aPattern;
+		^Pchain(this, if(aPattern.class==Event)
+			{aPattern.asESP}{aPattern})
 	}
 
 }

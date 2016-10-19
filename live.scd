@@ -28,7 +28,8 @@ b=(list:[0,2,3,2,3]).parent_(
 		},
 		asStream:{arg s; Plazy(s).asStream},
 		embedInStream:{arg s,in=(); s.pat.embedInStream(in)},
-		play:{arg s;Pbind(\type, \rest,\index,s).trace.play},
+		asESP:{arg s,in; Pbind(\type, \rest,\index,Plazy(s)).asStream},
+		play:{arg s;s.asESP.trace.play},
 		gui:{arg s;
 			s.win=(
 				go: {arg ss;
@@ -57,8 +58,9 @@ b=(list:[0,2,3,2,3]).parent_(
 	)
 ).copy;
 
-//b.play
-//Pbind(\io, b).trace.play
-//Plazy(b).trace.play
+//b.asESP;
+//b.play  //a pattern
+//Pbind(\io, b).trace.play  
+//Plazy(b).trace.play  a stream
+//(Pbind(\type, \note, \degree, 4)<>b<>Pbind(\ui, 8)).trace.play // a pattern
 )
-
