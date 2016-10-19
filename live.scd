@@ -16,7 +16,7 @@ a=r{ arg array;
 };
 b=(list:[0,2,3,2,3]).parent_(
 	(
-		embedInStream:{arg s;
+		pat:{arg s;
 		var str=a.asStream;
 		r{loop{
 			var res=str.next(s.list);
@@ -24,8 +24,11 @@ b=(list:[0,2,3,2,3]).parent_(
 				{s.win[\gui].index=res[1]; s.parent.index=res[1]}
 			};
 			res[0].yield
-		}}.embedInStream},
-		//	play:
+		}}
+		},
+		asStream:{arg s; Plazy(s).asStream},
+		embedInStream:{arg s,in=(); s.pat.embedInStream(in)},
+		play:{arg s;Pbind(\type, \rest,\index,s).trace.play},
 		gui:{arg s;
 			s.win=(
 				go: {arg ss;
@@ -54,6 +57,8 @@ b=(list:[0,2,3,2,3]).parent_(
 	)
 ).copy;
 
-//Pbind(\i, Plazy(b)).trace.play
+//b.play
+//Pbind(\io, b).trace.play
+//Plazy(b).trace.play
 )
 
