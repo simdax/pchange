@@ -1,66 +1,27 @@
-(
-
-var a,b;
-a=r{ arg array;
-	var internCount=0;
-	var mod=array.size;
-	loop{
-		var index=internCount % mod;
-		var res=array@@index;
-		array=[res,index].yield;
-		// checkage 
-		if(array.size!=mod, {
-			internCount=index+1; mod=array.size
-		},{	internCount=internCount+1});
-	}	
-};
-b=(list:[0,2,3,2,3]).parent_(
+{
+var a,c;
+a=Pchange.routine;
+c=Pchange.msvModifie;
+(list:[0,2,3,2,3]).parent_(
 	(
 		pat:{arg s;
 		var str=a.asStream;
 		r{loop{
 			var res=str.next(s.list);
 			defer{if(s.win.notNil)
-				{s.win[\gui].index=res[1]; s.parent.index=res[1]}
+				{s.win.index=res[1]; s.parent.index=res[1]}
 			};
 			res[0].yield
 		}}
 		},
-		asStream:{arg s; Plazy(s).asStream},
 		embedInStream:{arg s,in=(); s.pat.embedInStream(in)},
-		asESP:{arg s,in; Pbind(\type, \rest,\index,Plazy(s)).asStream},
-		play:{arg s;s.asESP.trace.play},
+		asStream:{arg s; Plazy(s).asStream},
+		asESP:{arg s,in; Pbind(\type,\rest,\index,Plazy(s))},
+		play:{arg s; s.esp=s.asESP.trace.play},
+		stop:{s.esp.stop},
 		gui:{arg s;
-			s.win=(
-				go: {arg ss;
-					//var g;
-					g=MSVP.main.copy.gui;
-					g.makeGui.win.onClose_{s[\gui]=nil};
-					g.msv.showIndex_(true)
-					.index_(s[\index]?0)
-					.addAction({arg msv;
-						msv.showIndex_(false);
-					},\mouseDownAction)
-					.addAction({arg msv;
-						msv.showIndex_(true);
-					},\mouseUpAction);
-					g.val_(s.list);
-					[g.msv,g.button1,g.button2].do { |i|
-						i.addAction({ 
-							s.list=g.val;
-						},\mouseUpAction)
-					};
-					ss[\gui]=g.msv;
-				}
-			);
-			s.win.go
+ 			s.win=c.(s)
 		},
 	)
 ).copy;
-
-//b.asESP;
-//b.play  //a pattern
-//Pbind(\io, b).trace.play  
-//Plazy(b).trace.play  a stream
-//(Pbind(\type, \note, \degree, 4)<>b<>Pbind(\ui, 8)).trace.play // a pattern
-)
+}

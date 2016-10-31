@@ -1,1 +1,4 @@
-Pchange : APP {}
+Pchange : APP {
+
+	*new{Pchange.live}
+}
