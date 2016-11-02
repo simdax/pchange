@@ -9,19 +9,30 @@ c=Pchange.msvModifie;
 		r{loop{
 			var res=str.next(s.list);
 			defer{if(s.win.notNil)
-				{s.win.index=res[1]; s.parent.index=res[1]}
+				{s.win.msv.index=res[1]; s.parent.index=res[1]}
 			};
 			res[0].yield
 		}}
 		},
+		// pattern support
 		embedInStream:{arg s,in=(); s.pat.embedInStream(in)},
 		asStream:{arg s; Plazy(s).asStream},
 		asESP:{arg s,in; Pbind(\type,\rest,\index,Plazy(s))},
 		play:{arg s; s.esp=s.asESP.trace.play},
 		stop:{s.esp.stop},
-		gui:{arg s;
- 			s.win=c.(s)
+		// interface for protoG and pattern Proxy
+		action_:{arg s,f; s.win.msv.addAction(f)},
+		value_:{arg s,val;
+			s.list=val;
+			if(s.win.notNil.postln, {
+				s.win.value_(val)
+			});
 		},
+		value:{arg s; s.list},
+		//		source:{arg s; s.list}, source_:{arg s,l; s.value=l},
+		//instantiation
+		gui:{arg s; s.win=c.(s)},
+		new:{arg s; s.gui} // returns the gui (protoG)
 	)
 ).copy;
 }

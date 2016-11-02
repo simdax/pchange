@@ -1,4 +1,4 @@
-// here double func 
+// here double func cause we evaluate it each time gui is called
 {{ arg envir;
 	var g;
 	g=GUIS.msv.front;
@@ -18,5 +18,5 @@
 		},\mouseUpAction)
 	};
 	// return value
-	g.msv
+	g
 }}
