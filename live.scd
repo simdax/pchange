@@ -22,6 +22,7 @@ c=Pchange.msvModifie;
 		stop:{s.esp.stop},
 		// interface for protoG and pattern Proxy
 		action_:{arg s,f; s.win.msv.addAction(f)},
+		doAction:{arg s,f; s.win.msv.doAction},
 		value_:{arg s,val;
 			s.list=val;
 			if(s.win.notNil.postln, {
@@ -31,8 +32,7 @@ c=Pchange.msvModifie;
 		value:{arg s; s.list},
 		//		source:{arg s; s.list}, source_:{arg s,l; s.value=l},
 		//instantiation
-		gui:{arg s; s.win=c.(s)},
-		new:{arg s; s.gui} // returns the gui (protoG)
+		new:{arg s; s.win=c.(s)},
 	)
 ).copy;
 }
